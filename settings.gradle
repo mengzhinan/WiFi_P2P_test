@@ -1,3 +1,5 @@
 rootProject.name='WiFi_P2P_test'
 include ':app'
 include ':p2pLib'
+include ':awareLib'
+include ':wifiLib'
