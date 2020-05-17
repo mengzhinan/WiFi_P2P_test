@@ -1,4 +1,4 @@
-package com.duke.wifilib
+package com.duke.baselib
 
 import android.content.BroadcastReceiver
 import android.content.Context

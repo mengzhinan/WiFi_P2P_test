@@ -1,4 +1,4 @@
-package com.duke.wifilib
+package com.duke.p2plib
 
 import android.content.Context
 import android.content.Intent
