@@ -3,7 +3,6 @@ package com.duke.baselib
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.IntentFilter
-import android.text.TextUtils
 
 /**
  * @Author: duke
@@ -12,15 +11,13 @@ import android.text.TextUtils
  */
 abstract class BaseReceiver : BroadcastReceiver() {
     private var isRegister = false
-    private var isActionAdded = false
     private val intentFilter = IntentFilter()
-    fun register(context: Context?, action: String?) {
-        if (isRegister || context == null) {
+    fun register(context: Context?, vararg actions: String?) {
+        if (isRegister || context == null || actions.isEmpty()) {
             return
         }
-        if (!isActionAdded && !TextUtils.isEmpty(action)) {
-            intentFilter.addAction(action)
-            isActionAdded = true
+        for (index in actions.indices) {
+            intentFilter.addAction(actions[index])
         }
         context.registerReceiver(this, intentFilter)
         isRegister = true
