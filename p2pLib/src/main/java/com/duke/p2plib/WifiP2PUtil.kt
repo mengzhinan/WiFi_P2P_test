@@ -1,6 +1,8 @@
 package com.duke.p2plib
 
 import android.content.Context
+import android.net.wifi.p2p.WifiP2pConfig
+import android.net.wifi.p2p.WifiP2pDevice
 import android.net.wifi.p2p.WifiP2pManager
 import android.os.Looper
 
@@ -32,20 +34,46 @@ object WifiP2PUtil {
         channel = wifiP2PManager?.initialize(context, Looper.getMainLooper(), channelListener)
     }
 
+    
 
-    @Synchronized
+    /**
+     * 检测范围内的可用对等设备。此操作为异步的。
+     */
+    fun discoverPeers(context: Context?, actionListener: WifiP2pManager.ActionListener?) {
+        getWifiP2PManager(context)
+        wifiP2PManager?.discoverPeers(channel, actionListener)
+    }
+
+    /**
+     * 请求已发现对等设备的列表。此操作为异步的。
+     */
+    fun requestPeers(context: Context?, peerListListener: WifiP2pManager.PeerListListener?) {
+        getWifiP2PManager(context)
+        wifiP2PManager?.requestPeers(channel, peerListListener)
+    }
+
+    fun connect(
+        context: Context?,
+        device: WifiP2pDevice,
+        actionListener: WifiP2pManager.ActionListener?
+    ) {
+        val config = WifiP2pConfig()
+        config.deviceAddress = device.deviceAddress
+        wifiP2PManager?.connect(channel, config, actionListener)
+    }
+
     fun registerReceiver(
         context: Context?,
-        onP2PChangeListener: WifiP2PReceiver.OnP2PChangeListener?
+        onP2PChangeListener: WifiP2PReceiver.OnP2PChangeListener?,
+        peerListListener: WifiP2pManager.PeerListListener?
     ) {
         if (wifiP2PReceiver == null) {
             wifiP2PReceiver = WifiP2PReceiver()
         }
         getWifiP2PManager(context)
-        wifiP2PReceiver?.register(context, onP2PChangeListener)
+        wifiP2PReceiver?.register(context, onP2PChangeListener, peerListListener)
     }
 
-    @Synchronized
     fun unRegisterReceiver(context: Context?) {
         wifiP2PReceiver?.unRegister(context)
         wifiP2PReceiver = null

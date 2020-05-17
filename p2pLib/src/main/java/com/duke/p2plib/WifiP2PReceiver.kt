@@ -13,6 +13,8 @@ import com.duke.baselib.BaseReceiver
 class WifiP2PReceiver : BaseReceiver() {
 
     private var onP2PChangeListener: OnP2PChangeListener? = null
+    private var peerListListener: WifiP2pManager.PeerListListener? = null
+
 
     interface OnP2PChangeListener {
         /**
@@ -32,7 +34,7 @@ class WifiP2PReceiver : BaseReceiver() {
          * 当 WLAN P2P 在设备上启用或停用时广播。
          * WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION
          */
-        fun onP2PWifiEnableChange(isWifiEnable: Boolean)
+        fun onP2PWifiEnableChange(isWifiP2PEnable: Boolean)
 
         /**
          * 当设备的详细信息（例如设备名称）更改时广播。
@@ -43,7 +45,8 @@ class WifiP2PReceiver : BaseReceiver() {
 
     fun register(
         context: Context?,
-        onP2PListener: OnP2PChangeListener?
+        onP2PListener: OnP2PChangeListener?,
+        tPeerListListener: WifiP2pManager.PeerListListener?
     ) {
         super.register(
             context,
@@ -53,6 +56,7 @@ class WifiP2PReceiver : BaseReceiver() {
             WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION
         )
         onP2PChangeListener = onP2PListener
+        peerListListener = tPeerListListener
     }
 
     override fun onReceive(context: Context, intent: Intent) {
@@ -61,13 +65,17 @@ class WifiP2PReceiver : BaseReceiver() {
                 // Check to see if Wi-Fi is enabled and notify appropriate activity
                 // 检查 WiFi 是否已启用并通知相应的活动
                 val state = intent.getIntExtra(WifiP2pManager.EXTRA_WIFI_STATE, -1)
-                val isWiFiEnable = state == WifiP2pManager.WIFI_P2P_STATE_ENABLED
-                onP2PChangeListener?.onP2PWifiEnableChange(isWiFiEnable)
+                val isWiFiP2PEnable = state == WifiP2pManager.WIFI_P2P_STATE_ENABLED
+                onP2PChangeListener?.onP2PWifiEnableChange(isWiFiP2PEnable)
             }
             WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION -> {
                 // Call WifiP2pManager.requestPeers() to get a list of current peers
                 // 调用 WifiP2pManager.requestPeers（）获取当前对等点的列表
-
+                // 如果发现进程成功并检测到对等设备，则系统会广播 WIFI_P2P_PEERS_CHANGED_ACTION Intent，
+                // 您可以在广播接收器中侦听该 Intent，以获取对等设备列表。
+                // 当应用接收到 WIFI_P2P_PEERS_CHANGED_ACTION Intent 时，
+                // 您可以通过 requestPeers() 请求已发现对等设备的列表。
+                WifiP2PUtil.requestPeers(context, peerListListener)
             }
             WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION -> {
                 // Respond to new connection or disconnections

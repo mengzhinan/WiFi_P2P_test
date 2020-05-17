@@ -37,7 +37,6 @@ object WifiUtil {
      * ACCESS_COARSE_LOCATION
      * CHANGE_WIFI_STATE
      */
-    @Synchronized
     @Throws(SecurityException::class)
     fun startScan(context: Context?): Boolean {
         return getWifiManager(context)?.startScan() ?: false
@@ -49,12 +48,10 @@ object WifiUtil {
      * @param context context
      * @return 扫描结果
      */
-    @Synchronized
     fun getScanResults(context: Context?): List<ScanResult>? {
         return getWifiManager(context)?.scanResults
     }
 
-    @Synchronized
     fun registerReceiver(
         context: Context?,
         onScanCompletedListener: WifiReceiver.OnScanCompletedListener?
@@ -66,7 +63,6 @@ object WifiUtil {
         wifiReceiver?.register(context, onScanCompletedListener)
     }
 
-    @Synchronized
     fun unRegisterReceiver(context: Context?) {
         wifiReceiver?.unRegister(context)
         wifiReceiver = null
