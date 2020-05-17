@@ -37,4 +37,6 @@ dependencies {
     implementation project(path: ':p2pLib')
     implementation project(path: ':awareLib')
     implementation project(path: ':wifiLib')
+    implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha03'
+    implementation project(path: ':baseLib')
 }
