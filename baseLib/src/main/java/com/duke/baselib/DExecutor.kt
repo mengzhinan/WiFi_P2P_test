@@ -47,7 +47,7 @@ class DExecutor private constructor() {
                 }
             }
 
-        fun get(): DExecutor? {
+        fun get(): DExecutor {
             if (instance == null) {
                 synchronized(DExecutor::class.java) {
                     if (instance == null) {
@@ -62,7 +62,7 @@ class DExecutor private constructor() {
                     }
                 }
             }
-            return instance
+            return instance!!
         }
     }
 }

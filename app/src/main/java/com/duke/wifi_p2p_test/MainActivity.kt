@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.duke.baselib.DPermission
+import com.duke.p2plib.activity.WifiP2PActivity
 import com.duke.wifi_p2p_test.awaredemo.AwareActivity
-import com.duke.wifi_p2p_test.p2pdemo.P2PActivity
 import com.duke.wifi_p2p_test.wifidemo.WifiActivity
 import java.util.*
 
@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         }
         findViewById<Button>(R.id.wifi_p2p).setOnClickListener {
             requestPermission()
-            startActivity(Intent(this, P2PActivity::class.java))
+            startActivity(Intent(this, WifiP2PActivity::class.java))
         }
         findViewById<Button>(R.id.wifi_scan).setOnClickListener {
             requestPermission()
