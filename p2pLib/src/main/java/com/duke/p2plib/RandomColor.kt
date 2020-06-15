@@ -20,7 +20,7 @@ object RandomColor {
     fun makeRandomColor(): String {
         var color = "$SPLIT#"
         for (i in 0..5) {
-            color += stringArray[random.nextInt()]
+            color += stringArray[random.nextInt(stringArray.size)]
         }
         return color
     }
