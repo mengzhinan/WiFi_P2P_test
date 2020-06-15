@@ -11,9 +11,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.duke.baselib.DLog;
 import com.duke.p2plib.R;
+import com.duke.p2plib.RandomColor;
 import com.duke.p2plib.p2phelper.WifiP2PHelper;
 import com.duke.p2plib.p2phelper.WifiP2PListener;
 import com.duke.p2plib.sockethelper.ServerSocketHelper;
@@ -26,6 +28,7 @@ public class ServerReceiveActivity extends BaseActivity {
     private TextView showContent;
     private EditText input;
     private Button btnSend;
+    private ConstraintLayout root;
 
     private ServerSocketHelper serverSocketHelper;
 
@@ -33,6 +36,7 @@ public class ServerReceiveActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_server_receive);
+        root = findViewById(R.id.root);
 
         showContent = findViewById(R.id.show_content);
         input = findViewById(R.id.input);
@@ -42,7 +46,7 @@ public class ServerReceiveActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 String text = input.getText().toString();
-                serverSocketHelper.send(text);
+                serverSocketHelper.send(text + RandomColor.INSTANCE.makeRandomColor());
                 input.setText("");
             }
         });
@@ -51,6 +55,7 @@ public class ServerReceiveActivity extends BaseActivity {
             @Override
             public void onReceived(String text) {
                 showContent.setText(text);
+                root.setBackgroundColor(RandomColor.INSTANCE.parseRandomColorInt(text));
             }
         });
 

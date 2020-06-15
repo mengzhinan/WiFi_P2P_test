@@ -10,11 +10,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.duke.baselib.DLog;
 import com.duke.p2plib.R;
+import com.duke.p2plib.RandomColor;
 import com.duke.p2plib.p2phelper.WifiP2PHelper;
 import com.duke.p2plib.p2phelper.WifiP2PListener;
 import com.duke.p2plib.sockethelper.ClientSocketHelper;
@@ -29,6 +31,7 @@ public class ClientSendActivity extends BaseActivity {
     private Button btnSend;
     private EditText input;
     private TextView showContent;
+    private ConstraintLayout root;
 
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
@@ -42,6 +45,7 @@ public class ClientSendActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client_send);
 
+        root = findViewById(R.id.root);
         btnScanDevice = findViewById(R.id.btn_scan_device);
         btnSend = findViewById(R.id.btn_send);
         input = findViewById(R.id.input);
@@ -77,7 +81,7 @@ public class ClientSendActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 String text = input.getText().toString();
-                clientSocketHelper.send(text);
+                clientSocketHelper.send(text + RandomColor.INSTANCE.makeRandomColor());
                 input.setText("");
             }
         });
@@ -86,6 +90,7 @@ public class ClientSendActivity extends BaseActivity {
             @Override
             public void onReceived(String text) {
                 showContent.setText(text);
+                root.setBackgroundColor(RandomColor.INSTANCE.parseRandomColorInt(text));
             }
         });
     }
