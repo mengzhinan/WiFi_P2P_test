@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:background="#40E0D0"
-        android:ellipsize="end"
+        android:ellipsize="middle"
         android:hint="[接收消息区域]"
         android:maxLines="2"
         android:paddingLeft="10dp"
@@ -48,6 +48,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="#FFFFFF"
             android:hint="告诉群主..." />
 
         <Button
